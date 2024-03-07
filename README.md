@@ -19,8 +19,3 @@ This project is licensed under the MIT License: https://opensource.org/licenses/
 Disclaimer:
 
 SafeConnect is intended for informational purposes only and does not guarantee complete safety or prevent all potential risks.
-
-project video link: https://drive.google.com/file/d/1doIZhXscKFOlAZUEPpKuWDHtXt6Z2gaj/view?usp=drivesdk
-
-
-https://youtu.be/pqfuwVvqLAg
