@@ -66,7 +66,7 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
   }
 
   ivrcall() async {
-    await FlutterPhoneDirectCaller.callNumber('9330693306');
+    await FlutterPhoneDirectCaller.callNumber('1234567890');
   }
 
   int currentTab = 0;
@@ -699,7 +699,8 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: () {
-                                              Get.to(() => const SimpleRecorder());
+                                              Get.to(
+                                                  () => const SimpleRecorder());
                                             },
                                             child: Container(
                                               child: Column(
