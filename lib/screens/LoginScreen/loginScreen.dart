@@ -104,8 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 128,
                               ),
                               Center(
-                                  child:
-                                      Image.asset("assets/images/train.gif")),
+                                child:
+                                    Image.asset("assets/images/train.gif"),
+                              ),
                             ],
                           ),
                         ),
@@ -124,10 +125,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                         decoration: InputDecoration(
                           labelText: "Mobile Number",
+                          prefixText: '+91 ',
                           labelStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 15,
-                            fontFamily: "gilroy",
+                            fontFamily: "gilroy", 
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),

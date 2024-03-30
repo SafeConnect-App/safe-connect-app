@@ -30,12 +30,14 @@ class _QRGeneratorState extends State<QRGenerator> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          child: Image.asset("assets/images/SafeConnect 1.png"),
+        child: Text('SafeConnect',style: TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),),
         ),
-        backgroundColor: Colors.grey.shade100,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
+
       ),
       body: Container(
         color: Colors.white,
@@ -57,7 +59,6 @@ class _QRGeneratorState extends State<QRGenerator> {
                     border: OutlineInputBorder(),
                   ),
                   onChanged: (value) {
-                    // Remove non-alphabetic characters and allow space
                     _nameController.value = _nameController.value.copyWith(
                       text: value.replaceAll(RegExp(r'[^a-zA-Z\s]'), ''),
                       selection: TextSelection.collapsed(offset: value.length),
@@ -73,9 +74,8 @@ class _QRGeneratorState extends State<QRGenerator> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType:
-                      TextInputType.text, // Change keyboardType to text
+                      TextInputType.text, 
                   onChanged: (value) {
-                    // Remove non-alphabetic and non-numeric characters
                     _vehicleNameController.value =
                         _vehicleNameController.value.copyWith(
                       text: value.replaceAll(RegExp(r'[^a-zA-Z0-9\s]'), ''),
@@ -91,9 +91,8 @@ class _QRGeneratorState extends State<QRGenerator> {
                     labelText: 'Vehicle No.',
                     border: OutlineInputBorder(),
                   ),
-                  maxLength: 10, // Set maximum length to 10 characters
+                  maxLength: 10, 
                   onChanged: (value) {
-                    // Convert input to uppercase, remove non-alphabetic and non-numeric characters, and limit to 10 characters
                     _vehicleNoController.value =
                         _vehicleNoController.value.copyWith(
                       text: value
@@ -113,7 +112,7 @@ class _QRGeneratorState extends State<QRGenerator> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType:
-                      TextInputType.emailAddress, // Set keyboard type to email
+                      TextInputType.emailAddress, 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -130,13 +129,14 @@ class _QRGeneratorState extends State<QRGenerator> {
                   decoration: const InputDecoration(
                     labelText: 'Contact No.',
                     border: OutlineInputBorder(),
+                    prefixText: '+91 ', 
                   ),
                   keyboardType:
-                      TextInputType.phone, // Set keyboard type to phone
-                  maxLength: 10, // Set maximum length to 10 digits
+                      TextInputType.phone,
+                  maxLength: 10, 
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly
-                  ], // Allow only digits
+                  ], 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your contact number';
@@ -150,10 +150,11 @@ class _QRGeneratorState extends State<QRGenerator> {
                   decoration: const InputDecoration(
                     labelText: 'Emergency Contact No.',
                     border: OutlineInputBorder(),
+                    prefixText: '+91 ',
                   ),
                   keyboardType:
-                      TextInputType.phone, // Set keyboard type to phone
-                  maxLength: 10, // Set maximum length to 10 digits
+                      TextInputType.phone, 
+                  maxLength: 10, 
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly
                   ], // Allow only digits
@@ -245,55 +246,54 @@ class _QRGeneratorState extends State<QRGenerator> {
     );
   }
 
-Future<void> _onGenerateQRPressed() async {
-  if (_formKey.currentState!.validate()) {
-    await _saveDataToFirestore(); // Save data to Firestore
-    await _generateQRFromFirestoreData(); // Generate QR code from Firestore data
-  } else {
-    // Show alert
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Form Error"),
-          content: const Text("Please fill the form correctly."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-Future<void> _generateQRFromFirestoreData() async {
-  try {
-    final user = FirebaseAuth.instance.currentUser;
-    final carNumber = _vehicleNoController.text;
-
-    final documentSnapshot = await FirebaseFirestore.instance
-        .collection('registeredVehicles')
-        .doc(carNumber)
-        .get();
-
-    if (documentSnapshot.exists) {
-      final data = documentSnapshot.data() as Map<String, dynamic>;
-
-      setState(() {
-        _qrData =
-            'Name: ${data['name']}, Vehicle Brand & Name: ${data['vehicleName']}, Vehicle No.: ${data['vehicleNumber']}, Email: ${data['email']}, Contact No.: ${data['contactNumber']}, Emergency Contact No.: ${data['emergencyContact']}';
-      });
+  Future<void> _onGenerateQRPressed() async {
+    if (_formKey.currentState!.validate()) {
+      await _saveDataToFirestore(); 
+      await _generateQRFromFirestoreData(); 
+    } else {
+      // Show alert
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Form Error"),
+            content: const Text("Please fill the form correctly."),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
     }
-  } catch (e) {
-    print(e.toString());
   }
-}
 
+  Future<void> _generateQRFromFirestoreData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final carNumber = _vehicleNoController.text;
+
+      final documentSnapshot = await FirebaseFirestore.instance
+          .collection('registeredVehicles')
+          .doc(carNumber)
+          .get();
+
+      if (documentSnapshot.exists) {
+        final data = documentSnapshot.data() as Map<String, dynamic>;
+
+        setState(() {
+          _qrData =
+              'Name: ${data['name']}, Vehicle Brand & Name: ${data['vehicleName']}, Vehicle No.: ${data['vehicleNumber']}, Email: ${data['email']}, Contact No.: ${data['contactNumber']}, Emergency Contact No.: ${data['emergencyContact']}';
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future<void> _saveDataToFirestore() async {
     try {
@@ -301,7 +301,7 @@ Future<void> _generateQRFromFirestoreData() async {
       final mobileNumber = user!.phoneNumber;
       final carNumber = _vehicleNoController.text;
 
-      // Check if the car number already exists in Firestore
+      
       final existingDoc = await FirebaseFirestore.instance
           .collection('registeredVehicles')
           .doc(carNumber)
@@ -327,7 +327,7 @@ Future<void> _generateQRFromFirestoreData() async {
           },
         );
       } else {
-        // Vehicle is not registered, proceed to save data
+    
         await FirebaseFirestore.instance
             .collection('registeredVehicles')
             .doc(carNumber)
@@ -340,7 +340,6 @@ Future<void> _generateQRFromFirestoreData() async {
           'emergencyContact': int.parse(_emergencyContactNoController.text),
         });
 
-        // Also save data to the additional collection
         await FirebaseFirestore.instance
             .collection('users')
             .doc(mobileNumber)
@@ -398,7 +397,6 @@ Future<void> _generateQRFromFirestoreData() async {
   }
 
   bool _isValidEmailFormat(String email) {
-    // Regular expression for email validation
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }
